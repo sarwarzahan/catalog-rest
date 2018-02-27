@@ -1,0 +1,7 @@
+login:
+    type: rest
+    resource: AppBundle\Controller\RestLoginController
+    
+products:
+    type: rest
+    resource: AppBundle\Controller\ProductsController
