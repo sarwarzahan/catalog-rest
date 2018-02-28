@@ -14,22 +14,15 @@ class ProductHandler implements HandlerInterface
     private $repository;
     
     /**
-     * @var ProductRepositoryInterface
-     */
-    private $restrictedRepository;
-    
-    /**
      * @var FormHandlerInterface
      */
     private $formHandler;
 
-    public function __construct(ProductRepositoryInterface $productRepository, 
-            ProductRepositoryInterface $productRestrictedRepository,
+    public function __construct(ProductRepositoryInterface $productRepository,
             FormHandlerInterface $formHandler
     )
     {
         $this->repository = $productRepository;
-        $this->restrictedRepository = $productRestrictedRepository;
         $this->formHandler = $formHandler;
     }
 
@@ -50,7 +43,7 @@ class ProductHandler implements HandlerInterface
      */
     public function post(array $parameters, array $options = [])
     {
-        $productEntityClass = $this->restrictedRepository->getEntityClassName();
+        $productEntityClass = $this->repository->getEntityClassName();
         $product = $this->formHandler->handle(
             new $productEntityClass(),
             $parameters,

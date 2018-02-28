@@ -70,7 +70,7 @@ services:
             - AppBundle\Entity\User
             
             
-    # -- REPOSITORY UNRESTRICTED --
+    # -- REPOSITORY --
     repository.common_doctrine_repository:
         class: AppBundle\Repository\Doctrine\CommonDoctrineRepository
         arguments:
@@ -92,60 +92,38 @@ services:
         class: AppBundle\Repository\Doctrine\DoctrineUserRepository
         arguments:
             - "@repository.common_doctrine_repository"
-
-    # -- REPOSITORY RESTRICTED --
-    repository.restricted_category_repository:
-        class: AppBundle\Repository\Restricted\RestrictedCategoryRepository
-        arguments:
-            - "@repository.doctrine_category_repository"
-            - "@security.authorization_checker"
-
-    repository.restricted_product_repository:
-        class: AppBundle\Repository\Restricted\RestrictedProductRepository
-        arguments:
-            - "@repository.doctrine_product_repository"
-            - "@security.authorization_checker"
             
     # -- HANDLER --
     handler.product_handler:
         class: AppBundle\Handler\ProductHandler
         arguments:
             - "@repository.doctrine_product_repository"
-            - "@repository.restricted_product_repository"
             - "@form.handler.product_form_handler"
             
     handler.category_handler:
         class: AppBundle\Handler\CategoryHandler
         arguments:
             - "@repository.doctrine_category_repository"
-            - "@repository.restricted_category_repository"
-            
-            
-    # -- FACTORY --
-    factory.product_factory:
-        class: AppBundle\Factory\ProductFactory
     
      # -- FORM --
-    form.type.restricted_product:
+    form.type.product:
         class: AppBundle\Form\Type\ProductType
         arguments:
             - "@repository.doctrine_category_repository"
         tags:
-            - { name: form.type, alias: restricted_product_form }
+            - { name: form.type, alias: product_form }
             
     # -- FORM HANDLER --
     form.handler.product_form_handler:
         class: AppBundle\Form\Handler\FormHandler
         arguments:
             - "@form.factory"
-            - "@form.type.restricted_product"
+            - "@form.type.product"
             
     # -- SECURITY ---
     security.authorization.voter.product_voter:
         class:      AppBundle\Security\Authorization\Voter\ProductVoter
         public:     false
-        arguments:
-            - "@security.access.decision_manager"
         tags:
            - { name: security.voter }
 

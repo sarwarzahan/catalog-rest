@@ -10,16 +10,10 @@ class CategoryHandler implements HandlerInterface
      * @var CategoryRepositoryInterface
      */
     private $repository;
-    
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    private $restrictedRepository;
 
-    public function __construct(CategoryRepositoryInterface $productRepository, CategoryRepositoryInterface $productRestrictedRepository)
+    public function __construct(CategoryRepositoryInterface $productRepository)
     {
         $this->repository = $productRepository;
-        $this->restrictedRepository = $productRestrictedRepository;
     }
 
     public function get($id)

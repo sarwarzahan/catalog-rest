@@ -4,10 +4,19 @@ namespace AppBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use AppBundle\Entity\User;
 
 class ProductVoter implements VoterInterface
 {
     const VIEW = 'view';
+    
+    private $decisionManager;
+
+    public function __construct(AccessDecisionManagerInterface $decisionManager)
+    {
+        $this->decisionManager = $decisionManager;
+    }
 
     public function supportsAttribute($attribute)
     {
@@ -16,34 +25,8 @@ class ProductVoter implements VoterInterface
         ));
     }
 
-    public function supportsClass($class)
+    public function vote(TokenInterface $token, $requestedAction, array $attributes)
     {
-        $supportedClass = 'AppBundle\Model\ProductInterface';
-
-        return $supportedClass === $class || is_subclass_of($class, $supportedClass);
-    }
-
-    public function vote(TokenInterface $token, $requestedProducts, array $attributes)
-    {
-        // Check if it's list of products
-        $isList = FALSE;
-        if (is_array($requestedProducts)) {
-            // Fetch the first product
-            $product = $requestedProducts[0];
-            $isList = TRUE;
-        } else {
-            $product = $requestedProducts;
-        }
-        // check if class of this object is supported by this voter
-        if (!$this->supportsClass(get_class($product))) {
-            return VoterInterface::ACCESS_ABSTAIN;
-        }
-        
-        // For list of products no security
-        if ($isList) {
-            return VoterInterface::ACCESS_GRANTED;
-        }
-
         // set the attribute to check against
         $attribute = $attributes[0];
 
@@ -51,14 +34,28 @@ class ProductVoter implements VoterInterface
         if (!$this->supportsAttribute($attribute)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
-
-        // get current logged in user
-        $loggedInUser = $token->getUser();
-
-        // make sure there is a user object (i.e. that the user is logged in)
-        if ($loggedInUser->hasRole('ROLE_USER')) {
-            return VoterInterface::ACCESS_GRANTED;
+        
+        $user = $token->getUser();
+        if (!$user instanceof User) {
+            // the user must be logged in; if not, deny access
+            return VoterInterface::ACCESS_DENIED;
         }
+        
+        // make sure there is a user object (i.e. that the user is logged in)
+        if ($user->hasRole('ROLE_USER')) {
+            $decision = VoterInterface::ACCESS_DENIED;
+            switch ($requestedAction) {
+                case 'post':
+                    $decision = VoterInterface::ACCESS_GRANTED;
+                    break;
+                default:
+                    $decision = VoterInterface::ACCESS_DENIED;
+                    break;
+            }
+            
+            return $decision;
+        }
+
 
         return VoterInterface::ACCESS_DENIED;
     }

@@ -43,7 +43,8 @@ class ProductController extends FOSRestController implements ClassResourceInterf
     
     /**
      * Get a single Product.
-     *
+     * 
+     * 
      * @ApiDoc(
      *   output = "AppBundle\Entity\Product",
      *   statusCodes = {
@@ -61,7 +62,6 @@ class ProductController extends FOSRestController implements ClassResourceInterf
     public function getAction($id)
     {
         $user = $this->handler->get($id);
-
         $view = $this->view($user);
 
         return $view;
@@ -109,6 +109,8 @@ class ProductController extends FOSRestController implements ClassResourceInterf
      */
     public function postAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('view', 'post');
+        
         try {
             $product = $this->handler->post($request->request->all());
 
