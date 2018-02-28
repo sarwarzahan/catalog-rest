@@ -3,6 +3,8 @@
 namespace AppBundle\Handler;
 
 use AppBundle\Repository\ProductRepositoryInterface;
+use AppBundle\Form\Handler\FormHandlerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductHandler implements HandlerInterface
 {
@@ -10,10 +12,25 @@ class ProductHandler implements HandlerInterface
      * @var ProductRepositoryInterface
      */
     private $repository;
+    
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $restrictedRepository;
+    
+    /**
+     * @var FormHandlerInterface
+     */
+    private $formHandler;
 
-    public function __construct(ProductRepositoryInterface $productRepositoryInterface)
+    public function __construct(ProductRepositoryInterface $productRepository, 
+            ProductRepositoryInterface $productRestrictedRepository,
+            FormHandlerInterface $formHandler
+    )
     {
-        $this->repository = $productRepositoryInterface;
+        $this->repository = $productRepository;
+        $this->restrictedRepository = $productRestrictedRepository;
+        $this->formHandler = $formHandler;
     }
 
     public function get($id)
@@ -23,12 +40,27 @@ class ProductHandler implements HandlerInterface
 
     public function all($limit = 10, $offset = 0)
     {
-        throw new \DomainException('ProductHandler::all is currently not implemented.');
+        return $this->repository->findAll();
     }
 
+    /**
+     * @param array                 $parameters
+     * @param array                 $options
+     * @return ProductInterface
+     */
     public function post(array $parameters, array $options = [])
     {
-        throw new \DomainException('ProductHandler::post is currently not implemented.');
+        $productEntityClass = $this->restrictedRepository->getEntityClassName();
+        $product = $this->formHandler->handle(
+            new $productEntityClass(),
+            $parameters,
+            Request::METHOD_POST,
+            $options
+        );
+
+        $this->repository->save($product);
+
+        return $product;
     }
 
     public function put($resource, array $parameters, array $options = [])

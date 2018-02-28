@@ -31,6 +31,11 @@ class RestrictedProductRepository extends RestrictedRepository implements Produc
         $this->repository = $repository;
         $this->authorizationChecker = $authorizationChecker;
     }
+    
+    public function getEntityClassName()
+    {
+        return $this->repository->getEntityClassName();
+    }
 
     /**
      * @param ProductInterface $product
@@ -76,5 +81,17 @@ class RestrictedProductRepository extends RestrictedRepository implements Produc
         $this->denyAccessUnlessGranted('view', $product);
 
         return $product;
+    }
+    
+    /**
+     * @return collection
+     */
+    public function findAll()
+    {
+        $productAll = $this->repository->findAll();
+
+        $this->denyAccessUnlessGranted('view', $productAll);
+
+        return $productAll;
     }
 }

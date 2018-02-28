@@ -32,6 +32,11 @@ class DoctrineProductRepository implements ProductRepositoryInterface, Repositor
         $this->commonRepository = $commonRepository;
         $this->productEntityRepository = $productEntityRepository;
     }
+    
+    public function getEntityClassName()
+    {
+        return $this->productEntityRepository->getClassName();
+    }
 
     /**
      * @param ProductInterface $product
@@ -66,5 +71,14 @@ class DoctrineProductRepository implements ProductRepositoryInterface, Repositor
     public function findOneById($id)
     {
         return $this->productEntityRepository->find($id);
+    }
+    
+    /**
+     * @param   $id
+     * @return  collection
+     */
+    public function findAll()
+    {
+        return $this->productEntityRepository->findAll();
     }
 }

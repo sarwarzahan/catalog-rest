@@ -66,4 +66,13 @@ class DoctrineCategoryRepository implements CategoryRepositoryInterface
     {
         return $this->categoryEntityRepository->find($id);
     }
+    
+    /**
+     * @param   $id
+     * @return  collection
+     */
+    public function findAll()
+    {
+        return $this->categoryEntityRepository->findAll();
+    }
 }

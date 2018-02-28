@@ -2,27 +2,33 @@
 
 namespace AppBundle\Entity\Repository;
 
-use AppBundle\Model\ProductInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 
 class ProductEntityRepository extends EntityRepository
 {
     /**
-     * @param   UserInterface       $user
-     * @return  array
+     * Duplicate functionality from parent class to remove dependency from doctrine
+     * 
+     * @param type $id
+     * @return object|null The entity instance or NULL if the entity can not be found.
      */
-    public function findAllForUser(ProductInterface $product)
+    public function find($id)
     {
-        $query = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('a')
-            ->from('AppBundle\Entity\Account', 'a')
-            ->join('a.users', 'u')
-            ->where('u.id = :userId')
-            ->setParameter('userId', $product->getId())
-            ->getQuery();
-
-        return $query->getResult();
+        return parent::find($id);
+    }
+    
+    /**
+     * Duplicate functionality to remove dependency from doctrine
+     * 
+     * @return array The entities.
+     */
+    public function findAll()
+    {
+        return parent::findAll();
+    }
+    
+    public function getClassName()
+    {
+        return parent::getClassName();
     }
 }

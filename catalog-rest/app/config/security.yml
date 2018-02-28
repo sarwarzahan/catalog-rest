@@ -31,6 +31,14 @@ security:
             pattern: ^/doc
             anonymous: true
             
+        api_product:
+            pattern: ^/products
+            anonymous: true
+            
+        api_category:
+            pattern: ^/categories
+            anonymous: true
+            
         api_login:
             pattern:  ^/login
             stateless: true
@@ -53,4 +61,6 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/doc,    roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/products, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/categories, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/,       roles: IS_AUTHENTICATED_FULLY }

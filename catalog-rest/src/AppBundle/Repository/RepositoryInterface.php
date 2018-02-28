@@ -13,4 +13,6 @@ interface RepositoryInterface
      * @return                          mixed|null
      */
     public function findOneById($id);
+    
+    public function findAll();
 }

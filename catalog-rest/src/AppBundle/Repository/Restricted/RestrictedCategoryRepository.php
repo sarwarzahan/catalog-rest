@@ -72,4 +72,16 @@ class RestrictedCategoryRepository extends RestrictedRepository implements Categ
 
         return $category;
     }
+    
+    /**
+     * @return collection
+     */
+    public function findAll()
+    {
+        $productAll = $this->repository->findAll();
+
+        $this->denyAccessUnlessGranted('view', $productAll);
+
+        return $productAll;
+    }
 }

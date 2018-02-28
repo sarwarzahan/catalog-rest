@@ -2,20 +2,28 @@
 
 namespace AppBundle\Entity\Repository;
 
-use AppBundle\Model\CategoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 
 class CategoryEntityRepository extends EntityRepository
 {
     /**
-     * @param   UserInterface       $user
-     * @return  array
+     * Duplicate functionality from parent class to remove dependency from doctrine
+     * 
+     * @param type $id
+     * @return object|null The entity instance or NULL if the entity can not be found.
      */
-    public function findOneByName($name)
+    public function find($id)
     {
-        $category= $this->findOneBy(array('name'=> $name));
-
-        return $category;
+        return parent::find($id);
+    }
+    
+    /**
+     * Duplicate functionality to remove dependency from doctrine
+     * 
+     * @return array The entities.
+     */
+    public function findAll()
+    {
+        return parent::findAll();
     }
 }

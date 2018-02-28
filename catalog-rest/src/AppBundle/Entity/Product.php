@@ -139,7 +139,30 @@ class Product implements ProductInterface, \JsonSerializable
 
         return $this;
     }
+    
+    function getCreated_at()
+    {
+        return $this->created_at;
+    }
 
+    function getUpdated_at() 
+    {
+        return $this->updated_at;
+    }
+    
+    function setId($id) {
+        $this->id = $id;
+    }
+
+    function setCreated_at(\datetime $created_at) {
+        $this->created_at = $created_at;
+    }
+
+    function setUpdated_at(\datetime $updated_at) {
+        $this->updated_at = $updated_at;
+    }
+
+    
     /**
      * @return mixed
      */

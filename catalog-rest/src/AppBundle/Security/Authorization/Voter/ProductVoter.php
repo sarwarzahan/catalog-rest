@@ -23,11 +23,25 @@ class ProductVoter implements VoterInterface
         return $supportedClass === $class || is_subclass_of($class, $supportedClass);
     }
 
-    public function vote(TokenInterface $token, $requestedProduct, array $attributes)
+    public function vote(TokenInterface $token, $requestedProducts, array $attributes)
     {
+        // Check if it's list of products
+        $isList = FALSE;
+        if (is_array($requestedProducts)) {
+            // Fetch the first product
+            $product = $requestedProducts[0];
+            $isList = TRUE;
+        } else {
+            $product = $requestedProducts;
+        }
         // check if class of this object is supported by this voter
-        if (!$this->supportsClass(get_class($requestedProduct))) {
+        if (!$this->supportsClass(get_class($product))) {
             return VoterInterface::ACCESS_ABSTAIN;
+        }
+        
+        // For list of products no security
+        if ($isList) {
+            return VoterInterface::ACCESS_GRANTED;
         }
 
         // set the attribute to check against

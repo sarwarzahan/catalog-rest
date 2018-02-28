@@ -2,6 +2,10 @@ login:
     type: rest
     resource: AppBundle\Controller\RestLoginController
     
-products:
+product:
     type: rest
-    resource: AppBundle\Controller\ProductsController
+    resource: AppBundle\Controller\ProductController
+    
+category:
+    type: rest
+    resource: AppBundle\Controller\CategoryController

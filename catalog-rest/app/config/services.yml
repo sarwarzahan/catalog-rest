@@ -7,12 +7,12 @@ services:
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
-        autowire: false
+        autowire: true
         # automatically registers your services as commands, event subscribers, etc.
         autoconfigure: true
         # this means you cannot fetch services directly from the container via $container->get()
         # if you need to do this, you can override this setting on individual services
-        public: true
+        public: false
 
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -33,6 +33,16 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    
+    # explicitly configure Controllers
+    AppBundle\Controller\ProductController:
+        arguments:
+            - "@handler.product_handler"
+            - "@logger"
+            
+    AppBundle\Controller\CategoryController:
+        arguments:
+            - "@handler.category_handler"
     
     # -- EVENTS --
     event.listener.content_type_listener:
@@ -97,10 +107,38 @@ services:
             - "@security.authorization_checker"
             
     # -- HANDLER --
-    handler.restricted_product_handler:
+    handler.product_handler:
         class: AppBundle\Handler\ProductHandler
         arguments:
+            - "@repository.doctrine_product_repository"
             - "@repository.restricted_product_repository"
+            - "@form.handler.product_form_handler"
+            
+    handler.category_handler:
+        class: AppBundle\Handler\CategoryHandler
+        arguments:
+            - "@repository.doctrine_category_repository"
+            - "@repository.restricted_category_repository"
+            
+            
+    # -- FACTORY --
+    factory.product_factory:
+        class: AppBundle\Factory\ProductFactory
+    
+     # -- FORM --
+    form.type.restricted_product:
+        class: AppBundle\Form\Type\ProductType
+        arguments:
+            - "@repository.doctrine_category_repository"
+        tags:
+            - { name: form.type, alias: restricted_product_form }
+            
+    # -- FORM HANDLER --
+    form.handler.product_form_handler:
+        class: AppBundle\Form\Handler\FormHandler
+        arguments:
+            - "@form.factory"
+            - "@form.type.restricted_product"
             
     # -- SECURITY ---
     security.authorization.voter.product_voter:
