@@ -115,7 +115,7 @@ class ProductController extends FOSRestController implements ClassResourceInterf
      */
     public function postAction(Request $request)
     {
-        $this->denyAccessUnlessGranted('create', 'post');
+        $this->denyAccessUnlessGranted('create', $this);
         
         try {
             $product = $this->handler->post($request->request->all());
@@ -158,11 +158,10 @@ class ProductController extends FOSRestController implements ClassResourceInterf
      */
     public function patchAction(Request $request, $id)
     {
-        $this->denyAccessUnlessGranted('update', 'patch');
+        $this->denyAccessUnlessGranted('update', $this);
         $requestedProduct = $this->handler->getRepository()->findOneById($id);
 
         try {
-
             $product = $this->handler->patch(
                 $requestedProduct,
                 $request->request->all()
@@ -199,7 +198,7 @@ class ProductController extends FOSRestController implements ClassResourceInterf
      */
     public function deleteAction($id)
     {
-        $this->denyAccessUnlessGranted('delete', 'delete');
+        $this->denyAccessUnlessGranted('delete', $this);
         $requestedProduct = $this->handler->getRepository()->findOneById($id);
 
         $this->handler->delete($requestedProduct);

@@ -28,9 +28,20 @@ class ProductVoter implements VoterInterface
             self::DELETE,
         ));
     }
-
-    public function vote(TokenInterface $token, $requestedAction, array $attributes)
+    
+    public function supportsClass($class)
     {
+        $supportedClass = 'AppBundle\Controller\ProductController';
+        return $supportedClass === $class || is_subclass_of($class, $supportedClass);
+    }
+
+    public function vote(TokenInterface $token, $requestedController, array $attributes)
+    {
+        // check if class of this object is supported by this voter
+        if (!$this->supportsClass(get_class($requestedController))) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
+        
         // set the attribute to check against
         $attribute = $attributes[0];
 
