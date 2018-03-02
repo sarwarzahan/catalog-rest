@@ -11,9 +11,9 @@ class CategoryHandler implements HandlerInterface
      */
     private $repository;
 
-    public function __construct(CategoryRepositoryInterface $productRepository)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
-        $this->repository = $productRepository;
+        $this->repository = $categoryRepository;
     }
 
     public function get($id)
@@ -36,17 +36,9 @@ class CategoryHandler implements HandlerInterface
         throw new \DomainException('CategoryHandler::put is currently not implemented.');
     }
 
-    /**
-     * @param UserInterface     $user
-     * @param array             $parameters
-     * @param array             $options
-     * @return UserInterface
-     */
     public function patch($user, array $parameters, array $options = [])
     {
-        $this->repository->save($user);
-
-        return $user;
+        throw new \DomainException('CategoryHandler::patch is currently not implemented.');
     }
 
     public function delete($resource)

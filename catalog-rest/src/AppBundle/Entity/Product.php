@@ -140,29 +140,6 @@ class Product implements ProductInterface, \JsonSerializable
         return $this;
     }
     
-    function getCreated_at()
-    {
-        return $this->created_at;
-    }
-
-    function getUpdated_at() 
-    {
-        return $this->updated_at;
-    }
-    
-    function setId($id) {
-        $this->id = $id;
-    }
-
-    function setCreated_at(\datetime $created_at) {
-        $this->created_at = $created_at;
-    }
-
-    function setUpdated_at(\datetime $updated_at) {
-        $this->updated_at = $updated_at;
-    }
-
-    
     /**
      * @return mixed
      */
@@ -171,6 +148,10 @@ class Product implements ProductInterface, \JsonSerializable
         return [
             'id'    => $this->id,
             'name'  => $this->name,
+            'category'  => $this->category,
+            'sku'  => $this->sku,
+            'price'  => $this->price,
+            'quantity'  => $this->quantity,
         ];
     }
     
@@ -193,6 +174,20 @@ class Product implements ProductInterface, \JsonSerializable
     public function onPreUpdate()
     {
         $this->updated_at = new \DateTime("now");
+    }
+    
+    /**
+     * Replace current Entity value from source Entity
+     * 
+     * @param \AppBundle\Entity\AppBundle\Entity\Product $sourceEntity
+     */
+    public function replaceValueFromEntity(Product $sourceEntity)
+    {
+        $this->setName($sourceEntity->getName());
+        $this->setCategory($sourceEntity->getCategory());
+        $this->setSku($sourceEntity->getSku());
+        $this->setPrice($sourceEntity->getprice());
+        $this->setQuantity($sourceEntity->getQuantity());
     }
 
 }

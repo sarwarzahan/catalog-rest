@@ -20,7 +20,7 @@ interface CategoryInterface
 
     /**
      * @param string $newName
-     * @return ProductInterface
+     * @return CategoryInterface
      */
     public function setName($newName);
 }

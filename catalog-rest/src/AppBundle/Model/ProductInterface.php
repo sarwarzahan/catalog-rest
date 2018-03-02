@@ -19,8 +19,52 @@ interface ProductInterface
     public function getName();
 
     /**
-     * @param string $newName
+     * @param string $name
      * @return ProductInterface
      */
-    public function setName($newName);
+    public function setName($name);
+    
+    /**
+     * @return CategoryInterface
+     */
+    public function getCategory();
+
+    /**
+     * @param CategoryInterface $category
+     * @return ProductInterface
+     */
+    public function setCategory($category);
+    
+    /**
+     * @return string
+     */
+    public function getSku();
+    
+    /**
+     * @param string $sku
+     * @return ProductInterface
+     */
+    public function setSku($sku);
+    
+    /**
+     * @return decimal
+     */
+    public function getprice();
+
+    /**
+     * @param decimal $price
+     * @return ProductInterface
+     */
+    public function setPrice($price);
+    
+    /**
+     * @return int
+     */
+    public function getQuantity();
+    
+    /**
+     * @param int $quantity
+     * @return ProductInterface
+     */
+    public function setQuantity($quantity);
 }

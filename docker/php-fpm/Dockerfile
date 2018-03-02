@@ -1,3 +1,7 @@
+FROM composer as composer
+COPY . /app
+RUN composer install --ignore-platform-reqs --no-scripts
+
 FROM phpdockerio/php7-fpm:latest
 
 # Install selected extensions and other stuff
@@ -7,3 +11,6 @@ RUN apt-get update \
 
 
 WORKDIR "/var/www/html"
+
+COPY . /var/www/html
+COPY --from=composer /app/vendor /var/www/html/vendor

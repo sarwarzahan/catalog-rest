@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "38072bcfc281fd6621892b8a9025b0fa",
-    "content-hash": "8d417beb6a8d492a638fb00821b48ce8",
+    "hash": "f8d5a7ed33a4050aa2e727ce66658b57",
+    "content-hash": "89bb53242f4cd7f239e3e838b067e77a",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -3330,20 +3330,20 @@
         },
         {
             "name": "kahlan/kahlan",
-            "version": "4.0.6",
+            "version": "3.1.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kahlan/kahlan.git",
-                "reference": "0f205c324df7247f7a9f63a6241f290aa447cf83"
+                "reference": "598c3682ca47fef162398a7acd706acd4fe39798"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kahlan/kahlan/zipball/0f205c324df7247f7a9f63a6241f290aa447cf83",
-                "reference": "0f205c324df7247f7a9f63a6241f290aa447cf83",
+                "url": "https://api.github.com/repos/kahlan/kahlan/zipball/598c3682ca47fef162398a7acd706acd4fe39798",
+                "reference": "598c3682ca47fef162398a7acd706acd4fe39798",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5"
+                "php": ">=5.4"
             },
             "require-dev": {
                 "squizlabs/php_codesniffer": "^2.7"
@@ -3380,7 +3380,7 @@
                 "testing",
                 "unit test"
             ],
-            "time": "2018-02-05 02:10:49"
+            "time": "2017-08-12 20:37:11"
         },
         {
             "name": "kriswallsmith/buzz",

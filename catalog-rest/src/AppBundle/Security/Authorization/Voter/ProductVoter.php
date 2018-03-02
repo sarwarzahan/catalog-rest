@@ -9,7 +9,9 @@ use AppBundle\Entity\User;
 
 class ProductVoter implements VoterInterface
 {
-    const VIEW = 'view';
+    const CREATE = 'create';
+    const UPDATE = 'update';
+    const DELETE = 'delete';
     
     private $decisionManager;
 
@@ -21,7 +23,9 @@ class ProductVoter implements VoterInterface
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
-            self::VIEW,
+            self::CREATE,
+            self::UPDATE,
+            self::DELETE,
         ));
     }
 
@@ -46,6 +50,12 @@ class ProductVoter implements VoterInterface
             $decision = VoterInterface::ACCESS_DENIED;
             switch ($requestedAction) {
                 case 'post':
+                    $decision = VoterInterface::ACCESS_GRANTED;
+                    break;
+                case 'patch':
+                    $decision = VoterInterface::ACCESS_GRANTED;
+                    break;
+                case 'delete':
                     $decision = VoterInterface::ACCESS_GRANTED;
                     break;
                 default:

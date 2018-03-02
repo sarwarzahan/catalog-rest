@@ -5,6 +5,7 @@ namespace AppBundle\Handler;
 use AppBundle\Repository\ProductRepositoryInterface;
 use AppBundle\Form\Handler\FormHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Model\ProductInterface;
 
 class ProductHandler implements HandlerInterface
 {
@@ -24,6 +25,11 @@ class ProductHandler implements HandlerInterface
     {
         $this->repository = $productRepository;
         $this->formHandler = $formHandler;
+    }
+    
+    public function getRepository()
+    {
+        return $this->repository;
     }
 
     public function get($id)
@@ -62,21 +68,52 @@ class ProductHandler implements HandlerInterface
     }
 
     /**
-     * @param UserInterface     $user
-     * @param array             $parameters
-     * @param array             $options
-     * @return UserInterface
+     * @param  ProductInterface     $requestedProduct
+     * @param  array                $parameters
+     * @param  array                $options
+     * @return mixed
      */
-    public function patch($user, array $parameters, array $options = [])
+    public function patch($requestedProduct, array $parameters, array $options = [])
     {
-        $this->repository->save($user);
+        $this->checkAccountImplementsInterface($requestedProduct);
 
-        return $user;
+        $productEntityClass = $this->repository->getEntityClassName();
+        
+        $product = $this->formHandler->handle(
+            new $productEntityClass(),
+            $parameters,
+            Request::METHOD_PATCH,
+            $options
+        );
+
+        $this->repository->refresh($requestedProduct);
+        $requestedProduct->replaceValueFromEntity($product);
+        $this->repository->save($requestedProduct);
+
+        return $requestedProduct;
     }
 
+    /**
+     * @param mixed $resource
+     * @return bool
+     */
     public function delete($resource)
     {
-        throw new \DomainException('ProductHandler::delete is currently not implemented.');
+        $this->checkAccountImplementsInterface($resource);
+
+        $this->repository->delete($resource);
+
+        return true;
+    }
+    
+    /**
+     * @param $product
+     */
+    private function checkAccountImplementsInterface($product)
+    {
+        if (!$product instanceof ProductInterface) {
+            throw new \InvalidArgumentException('Product must implement ProductInterface');
+        }
     }
 
 }

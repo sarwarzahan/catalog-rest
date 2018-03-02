@@ -17,6 +17,10 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use AppBundle\Handler\HandlerInterface;
 use Psr\Log\LoggerInterface;
+use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Patch;
+use FOS\RestBundle\Controller\Annotations\Delete;
+
 
 /**
  * Class ProductController
@@ -61,8 +65,8 @@ class ProductController extends FOSRestController implements ClassResourceInterf
      */
     public function getAction($id)
     {
-        $user = $this->handler->get($id);
-        $view = $this->view($user);
+        $product = $this->handler->get($id);
+        $view = $this->view($product);
 
         return $view;
     }
@@ -94,6 +98,8 @@ class ProductController extends FOSRestController implements ClassResourceInterf
     /**
      * Creates a new Product
      *
+     * @Post("/product/create")
+     * 
      * @ApiDoc(
      *  input = "AppBundle\Form\Type\ProductType",
      *  output = "AppBundle\Entity\Product",
@@ -109,7 +115,7 @@ class ProductController extends FOSRestController implements ClassResourceInterf
      */
     public function postAction(Request $request)
     {
-        $this->denyAccessUnlessGranted('view', 'post');
+        $this->denyAccessUnlessGranted('create', 'post');
         
         try {
             $product = $this->handler->post($request->request->all());
@@ -125,5 +131,79 @@ class ProductController extends FOSRestController implements ClassResourceInterf
 
             return $e->getForm();
         }
+    }
+    
+    /**
+     * Update existing Product from the submitted data
+     * 
+     * @Patch("/product/update/{id}")
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   input = "AppBundle\Form\ProductType",
+     *   output = "AppBundle\Entity\Product",
+     *   statusCodes = {
+     *     204 = "Returned when successful",
+     *     400 = "Returned when errors",
+     *     404 = "Returned when not found"
+     *   }
+     * )
+     *
+     * @param Request $request the request object
+     * @param int     $id      the product id
+     *
+     * @return FormTypeInterface|RouteRedirectView
+     *
+     * @throws NotFoundHttpException when does not exist
+     */
+    public function patchAction(Request $request, $id)
+    {
+        $this->denyAccessUnlessGranted('update', 'patch');
+        $requestedProduct = $this->handler->getRepository()->findOneById($id);
+
+        try {
+
+            $product = $this->handler->patch(
+                $requestedProduct,
+                $request->request->all()
+            );
+
+            $routeOptions = [
+                'id'  => $product->getId(),
+                '_format'    => $request->get('_format'),
+            ];
+
+            return $this->routeRedirectView('get_products', $routeOptions, Response::HTTP_NO_CONTENT);
+
+        } catch (InvalidFormException $e) {
+
+            return $e->getForm();
+        }
+    }
+    
+    /**
+     * Deletes a specific Product by ID
+     * 
+     * @Delete("/product/delete/{id}")
+     *
+     * @ApiDoc(
+     *  description="Deletes an existing Product",
+     *  statusCodes={
+     *         204="Returned when an existing Product has been successfully deleted",
+     *         403="Returned when trying to delete a non existent Product"
+     *     }
+     * )
+     *
+     * @param int         $id       the product id
+     * @return View
+     */
+    public function deleteAction($id)
+    {
+        $this->denyAccessUnlessGranted('delete', 'delete');
+        $requestedProduct = $this->handler->getRepository()->findOneById($id);
+
+        $this->handler->delete($requestedProduct);
+
+        return new View(null, Response::HTTP_NO_CONTENT);
     }
 }
