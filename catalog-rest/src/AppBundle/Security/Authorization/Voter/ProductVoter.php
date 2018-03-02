@@ -4,7 +4,6 @@ namespace AppBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use AppBundle\Entity\User;
 
 class ProductVoter implements VoterInterface
@@ -12,13 +11,6 @@ class ProductVoter implements VoterInterface
     const CREATE = 'create';
     const UPDATE = 'update';
     const DELETE = 'delete';
-    
-    private $decisionManager;
-
-    public function __construct(AccessDecisionManagerInterface $decisionManager)
-    {
-        $this->decisionManager = $decisionManager;
-    }
 
     public function supportsAttribute($attribute)
     {
@@ -59,11 +51,11 @@ class ProductVoter implements VoterInterface
         // make sure there is a user object (i.e. that the user is logged in)
         if ($user->hasRole('ROLE_USER')) {
             $decision = VoterInterface::ACCESS_DENIED;
-            switch ($requestedAction) {
-                case 'post':
+            switch ($attribute) {
+                case 'create':
                     $decision = VoterInterface::ACCESS_GRANTED;
                     break;
-                case 'patch':
+                case 'update':
                     $decision = VoterInterface::ACCESS_GRANTED;
                     break;
                 case 'delete':

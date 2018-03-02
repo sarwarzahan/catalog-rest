@@ -46,7 +46,6 @@ class CategoryController extends FOSRestController implements ClassResourceInter
     public function cgetAction()
     {
         $user = $this->handler->all();
-
         $view = $this->view($user);
 
         return $view;

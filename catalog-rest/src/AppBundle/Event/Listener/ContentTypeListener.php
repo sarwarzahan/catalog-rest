@@ -13,15 +13,12 @@ class ContentTypeListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-
         if ($request->headers->contains('Content-type', self::MIME_TYPE_APPLICATION_JSON)) {
             return true;
         }
-
         if ($request->getMethod() === Request::METHOD_GET) {
             return true;
         }
-
         throw new HttpContentTypeException();
     }
 }

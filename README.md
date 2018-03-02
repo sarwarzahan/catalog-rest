@@ -1,4 +1,4 @@
-# This is an REST Api project using Symfony 3.4, Mysql database and Docker for deployment
+# This is a REST Api implementation using Symfony 3.4, MySql database and Docker for deployment
 
 ## Installation Steps
 ----------------------

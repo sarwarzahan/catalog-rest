@@ -38,15 +38,17 @@ class ProductType extends AbstractType
                 'class'     => 'AppBundle:Category',
                 'choices' => $categoryChoice,
             ])
-            /*->add('category', ChoiceType::class, [
-                'choices' => $categoryChoice
-            ])*/
             ->add('sku', TextType::class)
             ->add('price', TextType::class)
             ->add('quantity', TextType::class)
         ;
     }
     
+    /**
+     * Returns list of product categories
+     * 
+     * @return AppBundle\Entity\Category Array
+     */
     private function buildCategoryFieldOptions()
     {
         return $categoryChoiceAll = $this->categoryRepository->findAll();

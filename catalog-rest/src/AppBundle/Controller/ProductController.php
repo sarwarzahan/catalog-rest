@@ -89,7 +89,6 @@ class ProductController extends FOSRestController implements ClassResourceInterf
     public function cgetAction()
     {
         $user = $this->handler->all();
-
         $view = $this->view($user);
 
         return $view;
@@ -119,7 +118,6 @@ class ProductController extends FOSRestController implements ClassResourceInterf
         
         try {
             $product = $this->handler->post($request->request->all());
-
             $routeOptions = [
                 'id'  => $product->getId(),
                 '_format'    => $request->get('_format'),
@@ -128,7 +126,6 @@ class ProductController extends FOSRestController implements ClassResourceInterf
             return $this->routeRedirectView('get_products', $routeOptions, Response::HTTP_CREATED);
 
         } catch (InvalidFormException $e) {
-
             return $e->getForm();
         }
     }
@@ -159,14 +156,13 @@ class ProductController extends FOSRestController implements ClassResourceInterf
     public function patchAction(Request $request, $id)
     {
         $this->denyAccessUnlessGranted('update', $this);
+        
         $requestedProduct = $this->handler->getRepository()->findOneById($id);
-
         try {
             $product = $this->handler->patch(
                 $requestedProduct,
                 $request->request->all()
             );
-
             $routeOptions = [
                 'id'  => $product->getId(),
                 '_format'    => $request->get('_format'),
@@ -175,8 +171,9 @@ class ProductController extends FOSRestController implements ClassResourceInterf
             return $this->routeRedirectView('get_products', $routeOptions, Response::HTTP_NO_CONTENT);
 
         } catch (InvalidFormException $e) {
-
             return $e->getForm();
+        } catch (\InvalidArgumentException $e) {
+            return new View('Invalid product id: ' . $id, Response::HTTP_BAD_REQUEST);
         }
     }
     
@@ -196,13 +193,17 @@ class ProductController extends FOSRestController implements ClassResourceInterf
      * @param int         $id       the product id
      * @return View
      */
-    public function deleteAction($id)
+    public function deleteAction($id) 
     {
         $this->denyAccessUnlessGranted('delete', $this);
+        
         $requestedProduct = $this->handler->getRepository()->findOneById($id);
-
-        $this->handler->delete($requestedProduct);
-
-        return new View(null, Response::HTTP_NO_CONTENT);
+        try {
+            $this->handler->delete($requestedProduct);
+            return new View(null, Response::HTTP_NO_CONTENT);
+        } catch (\InvalidArgumentException $e) {
+            return new View('Invalid product id: ' . $id, Response::HTTP_BAD_REQUEST);
+        }
     }
+
 }

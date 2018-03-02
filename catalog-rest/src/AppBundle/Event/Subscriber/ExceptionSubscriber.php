@@ -20,6 +20,12 @@ class ExceptionSubscriber implements EventSubscriberInterface
         );
     }
 
+    /**
+     * Custom exception handler for InsufficientAuthenticationException
+     * 
+     * @param GetResponseForExceptionEvent $event
+     * @throws AccessDeniedHttpException
+     */
     public function controllerAccessException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();

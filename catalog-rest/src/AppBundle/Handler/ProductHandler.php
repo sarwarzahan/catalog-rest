@@ -76,9 +76,7 @@ class ProductHandler implements HandlerInterface
     public function patch($requestedProduct, array $parameters, array $options = [])
     {
         $this->checkAccountImplementsInterface($requestedProduct);
-
         $productEntityClass = $this->repository->getEntityClassName();
-        
         $product = $this->formHandler->handle(
             new $productEntityClass(),
             $parameters,
@@ -89,7 +87,7 @@ class ProductHandler implements HandlerInterface
         $this->repository->refresh($requestedProduct);
         $requestedProduct->replaceValueFromEntity($product);
         $this->repository->save($requestedProduct);
-
+        
         return $requestedProduct;
     }
 
@@ -100,9 +98,8 @@ class ProductHandler implements HandlerInterface
     public function delete($resource)
     {
         $this->checkAccountImplementsInterface($resource);
-
         $this->repository->delete($resource);
-
+        
         return true;
     }
     

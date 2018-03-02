@@ -20,6 +20,12 @@ class UserEntityRepository extends EntityRepository implements UserLoaderInterfa
         }
     }
     
+    /**
+     * Load a user by username or email
+     * 
+     * @param string $username
+     * @return AppBundle\Entity\User
+     */
     public function loadUserByUsername($username)
     {
         return $this->createQueryBuilder('u')
