@@ -35,7 +35,7 @@
     "token": "eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJiZXR0eSIsImlhdCI6MTUxOTk1MzY2MiwiZXhwIjoxNTIwMDQwMDYyfQ.Rrg4kr2qvoYmDeLh4HJbMJuwAglFa79L2vzaMOthQJwEGhUcsOZYKg_HsParjRU8SjVXR1IquxbPZmc6oUtW9awUXu-dG7aUyL1_6MPApSgElgJAKQH_Aae9i15yNelVgNQLJ4q-3hOiPweiQn9kdBMtjpfGRym0kglrOx-8guBeotuzZZubKJT6r1NEaM_aICT-SOCK37hRLBHn9Uc1nhaASGGbJiFKGyBBvMh40ltCc5LLAyfo1tFgJbFADxtYrIJWLwqK6os3S_rbDAlLDhwrlLNSv6Xzf-HmXwGnlnnJtTXT4xymgKdTNiPGQ7ls_JNX1YKfo47WT08O-R8Fwz5L92TkqSxcqQHHvfBjw5qMEWVt-BW7R6nsbgNnuyIBSiV2O5kBHqcZQXX4IJrbt054LZddigc72hvwsIPhtZESKmxhBIAlxPiJRhPNVfo3CtkazWOj6wIzZ_Lwa5PY2CAPe3uAnufad_mnV7X6HF9jo37TzfCgxtL7GVmiBab4t0JH65xt0RulV5Br62cSfAshUbHnK55ErTQUiASfEPnLg4n6hEDByqO63ejGY0-WRBcpPT8gwv3QR1BMYiaPMctk7J6_2XW2SMaBR-4R_6H9jDh2kIEKd_Lamlov5Kt4G52h2NOpo8S4npKyUl5AS-b-4BsWOgAjevnIoI6MHVY"
 }
 
-- Now use the value of token to request for POST, PATCH, DELETE operation. For example in Postman: request type- **POST**, url- **localhost:8000/product/create**, Headers- **Content-Type application/json**,
+- Now use the value of token to request for POST, PATCH, DELETE operation. For example in Postman to create product: request type- **POST**, url- **localhost:8000/product/create**, Headers- **Content-Type application/json**,
 **Authorization Bearer use_token_value**,
 **Body (example)**- {
     "name": "test12",
@@ -44,6 +44,24 @@
     "price": "10.55",
     "quantity": "17"
 }
+
+- To update product: request type- **PATCH**, url- **localhost:8000/product/update/{product_id}**, Headers- **Content-Type application/json**,
+**Authorization Bearer use_token_value**,
+**Body (example)**- {
+    "name": "test12",
+    "category": "2",
+    "sku": "A000adc",
+    "price": "10.55",
+    "quantity": "17"
+}
+
+- To delete product: request type- **DELETE**, url- **localhost:8000/product/delete/{product_id}**, Headers- **Content-Type application/json**,
+**Authorization Bearer use_token_value**,
+**Body (example)**- Nothing
+
+- To get a product: request type- **GET**, url- **localhost:8000/products/{product_id}**
+- To get list of products: request type- **GET**, url- **localhost:8000/products**
+- To get list of categories: request type- **GET**, url- **localhost:8000/categories**
 
 ## Known Issues
 ----------------------------
