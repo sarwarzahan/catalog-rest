@@ -27,10 +27,4 @@ interface ProductRepositoryInterface
      * @param array                 $arguments
      */
     public function delete(ProductInterface $Product, array $arguments = []);
-
-    /**
-     * @param                       $id
-     * @return                      mixed|null
-     */
-    public function findOneById($id);
 }

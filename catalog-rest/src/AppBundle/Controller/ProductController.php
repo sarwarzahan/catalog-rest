@@ -47,8 +47,7 @@ class ProductController extends FOSRestController implements ClassResourceInterf
     
     /**
      * Get a single Product.
-     * 
-     * 
+     *  
      * @ApiDoc(
      *   output = "AppBundle\Entity\Product",
      *   statusCodes = {

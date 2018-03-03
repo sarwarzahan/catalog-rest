@@ -69,8 +69,6 @@ class ProductVoter implements VoterInterface
             return $decision;
         }
 
-
         return VoterInterface::ACCESS_DENIED;
     }
-
 }

@@ -75,7 +75,7 @@ class ProductHandler implements HandlerInterface
      */
     public function patch($requestedProduct, array $parameters, array $options = [])
     {
-        $this->checkAccountImplementsInterface($requestedProduct);
+        $this->checkProductImplementsInterface($requestedProduct);
         $productEntityClass = $this->repository->getEntityClassName();
         $product = $this->formHandler->handle(
             new $productEntityClass(),
@@ -85,6 +85,7 @@ class ProductHandler implements HandlerInterface
         );
 
         $this->repository->refresh($requestedProduct);
+        // Update the submitted product data to Product entity
         $requestedProduct->replaceValueFromEntity($product);
         $this->repository->save($requestedProduct);
         
@@ -97,7 +98,7 @@ class ProductHandler implements HandlerInterface
      */
     public function delete($resource)
     {
-        $this->checkAccountImplementsInterface($resource);
+        $this->checkProductImplementsInterface($resource);
         $this->repository->delete($resource);
         
         return true;
@@ -106,7 +107,7 @@ class ProductHandler implements HandlerInterface
     /**
      * @param $product
      */
-    private function checkAccountImplementsInterface($product)
+    private function checkProductImplementsInterface($product)
     {
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException('Product must implement ProductInterface');

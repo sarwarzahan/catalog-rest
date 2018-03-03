@@ -88,7 +88,7 @@ class User extends BaseUser implements UserInterface {
 
     /**
      * @param string $username
-     * @return Account
+     * @return string
      */
     public function setUsername($username)
     {
@@ -107,7 +107,7 @@ class User extends BaseUser implements UserInterface {
 
     /**
      * @param string $email
-     * @return Account
+     * @return string
      */
     public function setEmail($email)
     {
@@ -126,7 +126,7 @@ class User extends BaseUser implements UserInterface {
 
     /**
      * @param string $password
-     * @return Account
+     * @return string
      */
     public function setPassword($password)
     {
