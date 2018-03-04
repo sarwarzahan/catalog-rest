@@ -50,11 +50,11 @@ class Category implements CategoryInterface, \JsonSerializable
     protected $created_at;
 
     /**
-     * @var datetime $updated_at
+     * @var datetime $modified_at
      * 
      * @ORM\Column(type="datetime", nullable = true)
      */
-    protected $updated_at;
+    protected $modified_at;
     
     
     public function getId()
@@ -93,7 +93,7 @@ class Category implements CategoryInterface, \JsonSerializable
     public function onPrePersist()
     {
         $this->created_at = new \DateTime("now");
-        $this->updated_at = new \DateTime("now");
+        $this->modified_at = new \DateTime("now");
     }
 
     /**
@@ -103,7 +103,7 @@ class Category implements CategoryInterface, \JsonSerializable
      */
     public function onPreUpdate()
     {
-        $this->updated_at = new \DateTime("now");
+        $this->modified_at = new \DateTime("now");
     }
 
 }

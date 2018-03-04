@@ -121,7 +121,10 @@ class ProductController extends FOSRestController implements ClassResourceInterf
                 'id'  => $product->getId(),
                 '_format'    => $request->get('_format'),
             ];
-
+            
+            // Log
+            $this->logProductRequestInfo($request, $product->getId());
+            
             return $this->routeRedirectView('get_products', $routeOptions, Response::HTTP_CREATED);
 
         } catch (InvalidFormException $e) {
@@ -167,6 +170,9 @@ class ProductController extends FOSRestController implements ClassResourceInterf
                 '_format'    => $request->get('_format'),
             ];
 
+            // Log
+            $this->logProductRequestInfo($request, $id);
+            
             return $this->routeRedirectView('get_products', $routeOptions, Response::HTTP_NO_CONTENT);
 
         } catch (InvalidFormException $e) {
@@ -192,17 +198,30 @@ class ProductController extends FOSRestController implements ClassResourceInterf
      * @param int         $id       the product id
      * @return View
      */
-    public function deleteAction($id) 
+    public function deleteAction(Request $request, $id) 
     {
         $this->denyAccessUnlessGranted('delete', $this);
         
         $requestedProduct = $this->handler->getRepository()->findOneById($id);
         try {
+            
+            // Log
+            $this->logProductRequestInfo($request, $id);
+            
             $this->handler->delete($requestedProduct);
+            
             return new View(null, Response::HTTP_NO_CONTENT);
         } catch (\InvalidArgumentException $e) {
             return new View('Invalid product id: ' . $id, Response::HTTP_BAD_REQUEST);
         }
+    }
+    
+    private function logProductRequestInfo(\Symfony\Component\HttpFoundation\Request $request, $productId) {
+        // Log the request
+        $this->logger->info(
+            'Request ip: ' . $request->getClientIp() . '   Request type: ' . $request->getMethod() .
+            '   Request: ' . print_r($request->request->all(), true) . '   Product id: ' . $productId
+        );
     }
 
 }

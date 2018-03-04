@@ -64,11 +64,11 @@ class User extends BaseUser implements UserInterface {
     protected $created_at;
 
     /**
-     * @var datetime $updated_at
+     * @var datetime $modified_at
      * 
      * @ORM\Column(type="datetime", nullable = true)
      */
-    protected $updated_at;
+    protected $modified_at;
 
     /**
      * @return integer
@@ -244,7 +244,7 @@ class User extends BaseUser implements UserInterface {
     public function onPrePersist()
     {
         $this->created_at = new \DateTime("now");
-        $this->updated_at = new \DateTime("now");
+        $this->modified_at = new \DateTime("now");
     }
 
     /**
@@ -254,6 +254,6 @@ class User extends BaseUser implements UserInterface {
      */
     public function onPreUpdate()
     {
-        $this->updated_at = new \DateTime("now");
+        $this->modified_at = new \DateTime("now");
     }
 }
