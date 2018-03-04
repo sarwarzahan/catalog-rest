@@ -8,6 +8,7 @@ use AppBundle\Entity\Product;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMSSerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\HasLifecycleCallbacks
@@ -32,6 +33,8 @@ class Category implements CategoryInterface, \JsonSerializable
 
     /**
      * @ORM\Column(type="string", name="name")
+     * @Assert\NotBlank()
+     * @Assert\Type("string")
      * @JMSSerializer\Expose
      * @JMSSerializer\Groups({"category_all"})
      */

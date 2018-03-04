@@ -7,6 +7,7 @@ use AppBundle\Entity\Category;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMSSerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\HasLifecycleCallbacks
@@ -28,12 +29,15 @@ class Product implements ProductInterface, \JsonSerializable
 
     /**
      * @ORM\Column(type="string", name="name")
+     * @Assert\NotBlank()
+     * @Assert\Type("string")
      * @JMSSerializer\Expose
      * @JMSSerializer\Groups({"products_all"})
      */
     private $name;
     
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="products", cascade={"persist"})
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
@@ -41,6 +45,8 @@ class Product implements ProductInterface, \JsonSerializable
     
     /**
      * @ORM\Column(type="string", name="sku")
+     * @Assert\NotBlank()
+     * @Assert\Type("string")
      * @JMSSerializer\Expose
      * @JMSSerializer\Groups({"products_all"})
      */
@@ -48,6 +54,8 @@ class Product implements ProductInterface, \JsonSerializable
     
     /**
      * @ORM\Column(type="decimal", name="price", precision=8, scale=2)
+     * @Assert\NotBlank()
+     * @Assert\Type("numeric")
      * @JMSSerializer\Expose
      * @JMSSerializer\Groups({"products_all"})
      */
@@ -55,6 +63,8 @@ class Product implements ProductInterface, \JsonSerializable
     
     /**
      * @ORM\Column(type="integer", name="quantity", nullable=false, options={"unsigned":true, "default":0})
+     * @Assert\NotBlank()
+     * @Assert\Type("numeric")
      * @JMSSerializer\Expose
      * @JMSSerializer\Groups({"products_all"})
      */
