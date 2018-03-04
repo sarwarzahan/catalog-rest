@@ -69,6 +69,9 @@
 It's happening due to invalid cache or some bug in PHP opcache. Deleting all files from "var/cache/dev" directory solves it. You have to delete every 
 time you run kahlan test.
 
+- Sometimes doctrine cache throws 500 error. Run the command : php bin/console cache:clear --env=prod , If that does not solve the problem delete
+all files from "var/cache/prod" directory.
+
 ## Extra Tips
 -----------------
 - If you need to login in Docker container, use the following command: **docker exec -it symfony-webserver /bin/sh** 
